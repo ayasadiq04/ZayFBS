@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ZayFBS – Contact</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+   <link rel="stylesheet" href="contact.css">
+</head>
+<body>
+
+<!-- NAV -->
+ <header>
+        <nav>
+            <div class="logo">
+                <img src="images/logo.png" alt="logo"> ZayFBS
+            </div>
+            <ul>
+                <li><a href="index.html">Accueil</a></li>
+                <li><a href="products.html">Produits</a></li>
+                <li><a href="contact.html">contact</a></li>
+            </ul>
+            <div class="cart"> <img src="images/⁫icon.png" alt="icon"></div>
+        </nav>
+    </header>
+
+<!-- MAIN -->
+<main>
+  <h1 class="page-title">Contacter Nous</h1>
+
+  <div class="contact-grid">
+    <!-- Info -->
+    <div class="info-panel">
+      <div class="info-block">
+        <h3>adresse:</h3>
+        <p>Route de khouribga , Fquih Ben Salah , Maroc</p>
+      </div>
+      <div class="info-block">
+        <h3>Telephone:</h3>
+        <p>+212 600 000 000</p>
+      </div>
+      <div class="info-block">
+        <h3>Email :</h3>
+        <p>contact@zayfbs.com</p>
+      </div>
+      <div class="info-block">
+        <h3>Horaire :</h3>
+        <p>lundi-samedi : 9:00 – 18:00</p>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="form-card">
+      <div class="form-header">
+        <h2 id="formTitle">Nouveau message</h2>
+        <span class="badge" id="formBadge">Créer</span>
+      </div>
+
+      <div class="form-group">
+        <label for="nom">Nom et Prenom :</label>
+        <input type="text" id="nom" placeholder="Votre nom......." />
+      </div>
+      <div class="form-group">
+        <label for="email">Adresse Email :</label>
+        <input type="email" id="email" placeholder="Vous@exemple.com" />
+      </div>
+      <div class="form-group">
+        <label for="sujet">Sujet :</label>
+        <input type="text" id="sujet" placeholder="ex: Commande en gros. Partenariat......" />
+      </div>
+      <div class="form-group">
+        <label for="message">Message :</label>
+        <textarea id="message" placeholder="ecrire votre message ici....."></textarea>
+      </div>
+
+      <button class="btn btn-primary" onclick="submitForm()">
+        <span id="btnIcon">✉️</span>
+        <span id="btnText">Envoyer le message</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Messages List -->
+  <div class="messages-section">
+    <h2>📋 Messages reçus</h2>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Sujet</th>
+            <th>Message</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="messagesTable">
+          <tr><td colspan="6" class="empty-state">Aucun message pour l'instant.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>✏️ Modifier le message</h3>
+    <div class="form-group">
+      <label>Nom et Prenom :</label>
+      <input type="text" id="editNom" />
+    </div>
+    <div class="form-group">
+      <label>Adresse Email :</label>
+      <input type="email" id="editEmail" />
+    </div>
+    <div class="form-group">
+      <label>Sujet :</label>
+      <input type="text" id="editSujet" />
+    </div>
+    <div class="form-group">
+      <label>Message :</label>
+      <textarea id="editMessage"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeModal()">Annuler</button>
+      <button class="btn btn-primary" style="width:auto;" onclick="saveEdit()">💾 Sauvegarder</button>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-overlay" id="deleteModal">
+  <div class="modal">
+    <h3>🗑️ Supprimer le message ?</h3>
+    <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">Cette action est irréversible.</p>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" onclick="closeDeleteModal()">Annuler</button>
+      <button class="btn btn-delete" onclick="confirmDelete()">Supprimer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Footer -->
+<footer>
+  <span>Fquih Ben Saleh – Maroc</span>
+  <span>© 2026 ZayFBS – Tous droits réservés</span>
+</footer>
+
+<script>
+  // ── STATE ──
+  let messages = JSON.parse(localStorage.getItem('zayfbs_messages') || '[]');
+  let editIndex = null;
+  let deleteIndex = null;
+
+  // ── RENDER TABLE ──
+  function renderTable() {
+    const tbody = document.getElementById('messagesTable');
+    if (messages.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="6" class="empty-state">Aucun message pour l\'instant.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = messages.map((m, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td class="name-cell">${escHtml(m.nom)}</td>
+        <td>${escHtml(m.email)}</td>
+        <td>${escHtml(m.sujet)}</td>
+        <td class="msg-cell" title="${escHtml(m.message)}">${escHtml(m.message)}</td>
+        <td>
+          <div class="actions-cell">
+            <button class="btn btn-edit" onclick="openEdit(${i})">✏️ Éditer</button>
+            <button class="btn btn-delete" onclick="openDelete(${i})">🗑️</button>
+          </div>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function save() {
+    localStorage.setItem('zayfbs_messages', JSON.stringify(messages));
+  }
+
+  // ── CREATE ──
+  function submitForm() {
+    const nom     = document.getElementById('nom').value.trim();
+    const email   = document.getElementById('email').value.trim();
+    const sujet   = document.getElementById('sujet').value.trim();
+    const message = document.getElementById('message').value.trim();
+
+    if (!nom || !email || !sujet || !message) {
+      showToast('Veuillez remplir tous les champs.', true);
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      showToast('Email invalide.', true);
+      return;
+    }
+
+    messages.push({ nom, email, sujet, message, date: new Date().toLocaleDateString('fr-MA') });
+    save();
+    renderTable();
+    clearForm();
+    showToast('Message envoyé avec succès ! ✅');
+  }
+
+  function clearForm() {
+    ['nom','email','sujet','message'].forEach(id => document.getElementById(id).value = '');
+  }
+
+  // ── READ (via table already rendered) ──
+
+  // ── UPDATE ──
+  function openEdit(i) {
+    editIndex = i;
+    const m = messages[i];
+    document.getElementById('editNom').value     = m.nom;
+    document.getElementById('editEmail').value   = m.email;
+    document.getElementById('editSujet').value   = m.sujet;
+    document.getElementById('editMessage').value = m.message;
+    document.getElementById('editModal').classList.add('open');
+  }
+
+  function saveEdit() {
+    const nom     = document.getElementById('editNom').value.trim();
+    const email   = document.getElementById('editEmail').value.trim();
+    const sujet   = document.getElementById('editSujet').value.trim();
+    const message = document.getElementById('editMessage').value.trim();
+
+    if (!nom || !email || !sujet || !message) {
+      showToast('Veuillez remplir tous les champs.', true);
+      return;
+    }
+
+    messages[editIndex] = { ...messages[editIndex], nom, email, sujet, message };
+    save();
+    renderTable();
+    closeModal();
+    showToast('Message modifié avec succès ! ✏️');
+  }
+
+  function closeModal() {
+    document.getElementById('editModal').classList.remove('open');
+    editIndex = null;
+  }
+
+  // ── DELETE ──
+  function openDelete(i) {
+    deleteIndex = i;
+    document.getElementById('deleteModal').classList.add('open');
+  }
+
+  function confirmDelete() {
+    messages.splice(deleteIndex, 1);
+    save();
+    renderTable();
+    closeDeleteModal();
+    showToast('Message supprimé. 🗑️');
+  }
+
+  function closeDeleteModal() {
+    document.getElementById('deleteModal').classList.remove('open');
+    deleteIndex = null;
+  }
+
+  // ── TOAST ──
+  let toastTimer;
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = isError ? 'error show' : 'show';
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => { t.className = ''; }, 3000);
+  }
+
+  // ── CLOSE MODALS ON OVERLAY CLICK ──
+  document.getElementById('editModal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+  document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) closeDeleteModal();
+  });
+
+  // ── INIT ──
+  renderTable();
+</script>
+</body>
+</html>

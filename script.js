@@ -456,42 +456,90 @@ function openAddModal() {
   if (existing) existing.remove();
 
   const modal = document.createElement('div');
-  modal.id    = 'add-modal';
+  modal.id = 'add-modal';
   modal.innerHTML = `
-    <div class="modal-overlay">
-      <div class="modal-box">
-        <h3>Nouveau produit</h3>
-        <label>Nom
-          <input id="new-name" type="text" placeholder="Nom du produit">
+    <div class="modal-overlay" style="
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.5);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 1000;
+    ">
+      <div class="modal-box" style="
+        background: #fff;
+        border-radius: 12px;
+        padding: 32px 28px;
+        width: 340px;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        font-family: sans-serif;
+      ">
+        <h3 style="text-align:center; margin: 0 0 24px; font-size: 1.1rem; font-weight: 600;">
+          Ajouter un nouveau produit
+        </h3>
+
+        <label style="display:block; margin-bottom: 14px; font-size: 0.85rem; color: #333;">
+          Nom du produit :
+          <input id="new-name" type="text" placeholder="ex: ZayFBS Premium Gold, ZayFBS Bio Naturel, ....."
+            style="width:100%; margin-top:6px; padding: 9px 12px; border: 1px solid #ddd;
+                   border-radius: 6px; font-size: 0.85rem; box-sizing: border-box;">
         </label>
-        <label>Prix (DH)
-          <input id="new-price" type="number" placeholder="Prix">
+
+        <label style="display:block; margin-bottom: 14px; font-size: 0.85rem; color: #333;">
+          Prix :
+          <input id="new-price" type="number" placeholder="ex: 190 DH"
+            style="width:100%; margin-top:6px; padding: 9px 12px; border: 1px solid #ddd;
+                   border-radius: 6px; font-size: 0.85rem; box-sizing: border-box;">
         </label>
-        <label>Description
-          <textarea id="new-desc" placeholder="Description du produit"></textarea>
+
+        <label style="display:block; margin-bottom: 14px; font-size: 0.85rem; color: #333;">
+          Url de l'image (optionnel) :
+          <div style="position: relative; margin-top: 6px;">
+            <input id="new-img" type="text" placeholder="https://exemple.com/image.jpg"
+              style="width:100%; padding: 9px 40px 9px 12px; border: 1px solid #ddd;
+                     border-radius: 6px; font-size: 0.85rem; box-sizing: border-box;">
+            <span style="
+              position: absolute; right: 10px; top: 50%; transform: translateY(-50%);
+              color: #aaa; font-size: 1.1rem; pointer-events: none;
+            ">⬇</span>
+          </div>
         </label>
-        <label>Image (URL ou chemin)
-          <input id="new-img" type="text" placeholder="images/monfichier.png">
+
+        <label style="display:block; margin-bottom: 20px; font-size: 0.85rem; color: #333;">
+          Description :
+          <textarea id="new-desc" placeholder="Décrivez les caractéristique de ce produit ...."
+            style="width:100%; margin-top:6px; padding: 9px 12px; border: 1px solid #ddd;
+                   border-radius: 6px; font-size: 0.85rem; box-sizing: border-box;
+                   height: 90px; resize: vertical;"></textarea>
         </label>
-        <div class="modal-actions">
-          <button id="modal-add-save">Ajouter</button>
-          <button id="modal-add-cancel">Annuler</button>
+
+        <div class="modal-actions" style="display: flex; gap: 10px;">
+          <button id="modal-add-save" style="
+            flex: 1; padding: 10px; background: #b5a642; color: #fff;
+            border: none; border-radius: 6px; font-size: 0.9rem; cursor: pointer;
+          ">Enregistrer</button>
+          <button id="modal-add-cancel" style="
+            flex: 1; padding: 10px; background: #fff; color: #333;
+            border: 1px solid #ccc; border-radius: 6px; font-size: 0.9rem; cursor: pointer;
+          ">Annuler</button>
         </div>
       </div>
     </div>
   `;
   document.body.appendChild(modal);
 
+  // Close on cancel
   document.getElementById('modal-add-cancel').addEventListener('click', () => modal.remove());
+
+  // Close on overlay click
   modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
     if (e.target === modal.querySelector('.modal-overlay')) modal.remove();
   });
 
+  // Save new product
   document.getElementById('modal-add-save').addEventListener('click', () => {
     const name  = document.getElementById('new-name').value.trim();
     const price = parseInt(document.getElementById('new-price').value);
     const desc  = document.getElementById('new-desc').value.trim();
-    const img   = document.getElementById('new-img').value.trim() || 'images/Premium gold.png';
+    const img   = document.getElementById('new-img').value.trim() || 'images/Premium gold.png'; // FIX: was files[o] (wrong)
 
     if (!name || isNaN(price) || price <= 0 || !desc) {
       alert('Merci de remplir tous les champs.');
@@ -735,3 +783,32 @@ document.addEventListener('DOMContentLoaded', () => {
   initHamburger();
   updateNavBadge();
 });
+// CONTACT
+
+const btnSend = document.getElementById('btn-send');
+
+if (btnSend) {
+    btnSend.addEventListener('click', () => {
+        const nom = document.getElementById('input-nom').value.trim();
+        const email = document.getElementById('input-email').value.trim();
+        const sujet = document.getElementById('input-sujet').value.trim();
+        const message = document.getElementById('input-message').value.trim();
+
+        if (!nom || !email || !sujet || !message) {
+            showToast('Veuillez remplir tous les champs.');
+            return;
+        }
+
+        showToast('Message envoyé avec succès !');
+
+        document.getElementById('input-nom').value = '';
+        document.getElementById('input-email').value = '';
+        document.getElementById('input-sujet').value = '';
+        document.getElementById('input-message').value = '';
+    });
+}
+
+// INIT
+
+updateCartBadge();
+renderProducts();
