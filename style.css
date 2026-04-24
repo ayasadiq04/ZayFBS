@@ -158,10 +158,13 @@ nav ul li a {
 }
 
 .cert-item img {
-    height: 100px;
+    height: 150px;
     opacity: 0.8;
 }
-
+.cert-itemé img {
+    height: 180px;
+    opacity: 0.8;
+}
 /* Processus */
 .process-grid { grid-template-columns: repeat(4, 1fr); }
 
@@ -185,7 +188,7 @@ nav ul li a {
  /* ── FOOTER ── */
     footer {
       background: var(--dark);
-      color: #888;
+      color: hsl(0, 100%, 99%);
       font-size: 0.8rem;
       display: flex;
       justify-content: space-between;

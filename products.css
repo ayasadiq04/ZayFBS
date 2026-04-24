@@ -345,7 +345,7 @@ nav ul li a {
  /* ── FOOTER ── */
     footer {
       background: var(--dark);
-      color: #888;
+      color: #ffffff;
       font-size: 0.8rem;
       display: flex;
       justify-content: space-between;
