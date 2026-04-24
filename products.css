@@ -3,6 +3,7 @@
     --gold: #c5a059;
     --light-bg: #f9f9f9;
     --text-gray: #555;
+    --dark: #1a1a0e;
 }
 
 * {
@@ -341,23 +342,16 @@ nav ul li a {
             background-color: #fff;
         }
 
-        /* Footer */
-        footer {
-           background-color: #0f3d1c;
-           color: #fff;
-           padding: 20px 10%;
-           font-size: 18px;
-           font-weight: 500;
-        }
-        .foot{
-            margin-right: 350px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-        }
+ /* ── FOOTER ── */
+    footer {
+      background: var(--dark);
+      color: #888;
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
 
         /* Responsive */
         @media (max-width: 900px) {
