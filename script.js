@@ -10,7 +10,23 @@ let products = [
 let cart = [];     
 let nextId = 6;
 let editingId = null;
+//  LOCAL STORAGE
+function saveData() {
+  localStorage.setItem("products", JSON.stringify(products));
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
 
+function loadData() {
+  const p = localStorage.getItem("products");
+  const c = localStorage.getItem("cart");
+
+  if (p) products = JSON.parse(p);
+  if (c) cart = JSON.parse(c);
+
+  if (products.length > 0) {
+    nextId = Math.max(...products.map(p => p.id)) + 1;
+  }
+}
 //  RENDER
 function renderProducts() {
   const grid = document.querySelector(".products-grid");
@@ -76,6 +92,7 @@ function renderCart() {
   `;
 }
 
+
 // CART ACTIONS
 function addToCart(id) {
   const item = cart.find(i => i.productId === id);
@@ -89,6 +106,7 @@ function changeQty(id, delta) {
   if (!item) return;
   item.quantity += delta;
   if (item.quantity <= 0) cart = cart.filter(i => i.productId !== id);
+  saveData();
   renderCart();
 }
 
@@ -99,6 +117,7 @@ function checkout() {
   }, 0);
   alert(`Merci pour votre commande ! 🎉\nTotal : ${total} DH`);
   cart = [];
+  saveData();
   renderCart();
 }
 
@@ -108,6 +127,7 @@ function deleteProduct(id) {
   if (!p || !confirm(`Supprimer "${p.name}" ?`)) return;
   products = products.filter(pr => pr.id !== id);
   cart = cart.filter(i => i.productId !== id);
+  saveData();
   renderProducts();
   renderCart();
   toast("Produit supprimé.");
@@ -158,6 +178,7 @@ function saveProduct() {
 
   closeModal();
   renderProducts();
+  saveData();
 }
 
 // TOAST 
@@ -179,8 +200,9 @@ function toast(msg, type = "success") {
   setTimeout(() => { el.style.opacity = "0"; setTimeout(() => el.remove(), 400); }, 2500);
 }
 
-// ─── INIT
+//  INIT
 document.addEventListener("DOMContentLoaded", () => {
+  loadData();
   renderProducts();
   renderCart();
 
