@@ -53,7 +53,6 @@
     <div class="form-card">
       <div class="form-header">
         <h2 id="formTitle">Nouveau message</h2>
-        <span class="badge" id="formBadge">Créer</span>
       </div>
 
       <div class="form-group">
@@ -74,55 +73,11 @@
       </div>
 
       <button class="btn btn-primary" onclick="submitForm()">
-        <span id="btnIcon">✉️</span>
         <span id="btnText">Envoyer le message</span>
       </button>
     </div>
   </div>
 </main>
-
-<!-- Edit Modal -->
-<div class="modal-overlay" id="editModal">
-  <div class="modal">
-    <h3>✏️ Modifier le message</h3>
-    <div class="form-group">
-      <label>Nom et Prenom :</label>
-      <input type="text" id="editNom" />
-    </div>
-    <div class="form-group">
-      <label>Adresse Email :</label>
-      <input type="email" id="editEmail" />
-    </div>
-    <div class="form-group">
-      <label>Sujet :</label>
-      <input type="text" id="editSujet" />
-    </div>
-    <div class="form-group">
-      <label>Message :</label>
-      <textarea id="editMessage"></textarea>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-cancel" onclick="closeModal()">Annuler</button>
-      <button class="btn btn-primary" style="width:auto;" onclick="saveEdit()">💾 Sauvegarder</button>
-    </div>
-  </div>
-</div>
-<tbody id="messagesTable"></tbody>
-
-<!-- Delete Confirm Modal -->
-<div class="modal-overlay" id="deleteModal">
-  <div class="modal">
-    <h3>🗑️ Supprimer le message ?</h3>
-    <p style="color:var(--text-muted);font-size:.9rem;margin-top:.5rem;">Cette action est irréversible.</p>
-    <div class="modal-actions">
-      <button class="btn btn-cancel" onclick="closeDeleteModal()">Annuler</button>
-      <button class="btn btn-delete" onclick="confirmDelete()">Supprimer</button>
-    </div>
-  </div>
-</div>
-
-<!-- Toast -->
-<div id="toast"></div>
 
 <!-- Footer -->
 <footer>
