@@ -1,10 +1,10 @@
 //  DATA 
 let products = [
-  { id: 1, name: "Zayto Premium Gold",    price: 120, image: "images/Premium gold.png",   description: "Une huile d'olive extra vierge de qualité supérieure, extraite à froid à partir des meilleures olives de Fquih Ben Saleh. Son goût fruité et équilibré accompagne parfaitement vos plats traditionnels et modernes." },
-  { id: 2, name: "Zayto Bio Naturel",     price: 200, image: "images/bio naturel.png",     description: " Issue de l'agriculture biologique, cette huile d'olive est 100% naturelle, sans additifs ni produits chimiques. Idéale pour une alimentation saine et équilibrée." },
-  { id: 3, name: "Zayto Beldi Tradition", price: 100, image: "images/beldi tradition.png", description: "Une huile d'olive authentique produite selon des méthodes artisanales transmises de génération en génération. Elle offre un goût riche et intense typique du terroir marocain." },
-  { id: 4, name: "Zayto Fresh Press",     price: 80,  image: "images/fresh press.png",     description: " Pressée à froid immédiatement après la récolte, cette huile conserve toutes ses propriétés nutritionnelles et son arôme naturel pour une fraîcheur incomparable" },
-  { id: 5, name: "Zayto Intense Flavor",  price: 90,  image: "images/intense favor.png",   description: " Une huile au caractère fort et légèrement piquant, idéale pour les amateurs de saveurs puissantes et authentiques." },
+  { id: 1, name: "ZayFBS Premium Gold",    price: 120, image: "images/Premium gold.png",   description: "Une huile d'olive extra vierge de qualité supérieure, extraite à froid à partir des meilleures olives de Fquih Ben Saleh. Son goût fruité et équilibré accompagne parfaitement vos plats traditionnels et modernes." },
+  { id: 2, name: "ZayFBS Bio Naturel",     price: 200, image: "images/bio naturel.png",     description: " Issue de l'agriculture biologique, cette huile d'olive est 100% naturelle, sans additifs ni produits chimiques. Idéale pour une alimentation saine et équilibrée." },
+  { id: 3, name: "ZayFBS Beldi Tradition", price: 100, image: "images/beldi tradition.png", description: "Une huile d'olive authentique produite selon des méthodes artisanales transmises de génération en génération. Elle offre un goût riche et intense typique du terroir marocain." },
+  { id: 4, name: "ZayFBS Fresh Press",     price: 80,  image: "images/fresh press.png",     description: " Pressée à froid immédiatement après la récolte, cette huile conserve toutes ses propriétés nutritionnelles et son arôme naturel pour une fraîcheur incomparable" },
+  { id: 5, name: "ZayFBS Intense Flavor",  price: 90,  image: "images/intense favor.png",   description: " Une huile au caractère fort et légèrement piquant, idéale pour les amateurs de saveurs puissantes et authentiques." },
 ];
 
 let cart = [];     
